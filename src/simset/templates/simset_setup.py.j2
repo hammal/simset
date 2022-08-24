@@ -1,0 +1,96 @@
+from dataclasses import dataclass
+from typing import Iterable, List, Any
+import pickle
+import logging
+import simset
+
+logger = logging.getLogger(__name__)
+
+## simset.data_folders.append(["path1", "path2", "path3"])
+
+#######################################################################################
+# A data class to accommodate the resulting data.
+#######################################################################################
+@dataclass
+class ResultDataClass:
+    """
+    A dataclass to hold return arguments.
+    """
+
+    args: List
+    res: Any
+
+
+#######################################################################################
+# The simulate function to be runned at each node.
+#######################################################################################
+@simset.arg('arg1', [1, 2, 3])
+@simset.arg('arg2', [4, 5, 6])
+def simulate_function(arg1, arg2):
+    """
+    The simulate function which will run on each computer node
+    with an unique argument tuple. Note that the order of the
+    @simset.arg(...) and simulate_function(arg,...) must match.
+    """
+
+    # do something interesting
+    result = f"arg1^arg2 = {arg1 ** arg2}"
+
+    # put the results in the ResultDataClass
+    result_dataclass = ResultDataClass(args=(arg1, arg2), res=result)
+
+    # return the results dataclass and it will automatically be stored
+    return result_dataclass
+
+
+#######################################################################################
+# The post processing function for data merging.
+#######################################################################################
+def post_processing_function(results: Iterable[ResultDataClass]):
+    """
+    The post processing list where the argument is a iterable containing
+    all currently finished simulation processes.
+    """
+    for res in results:
+        print(f"for {res.args}: {res.res}")
+
+
+#######################################################################################
+# Specify a save function, defaults to pickeling.
+#######################################################################################
+def save(result: ResultDataClass, filename: str) -> None:
+    """
+    The save function, turning the ResultDataClass into
+    a file on disk.
+    """
+    with open(filename, "wb") as f:
+        pickle.dump(result, f, protocol=-1)
+
+
+#######################################################################################
+# Specify a load function, defaults to pickeling.
+#######################################################################################
+def load(filename: str) -> ResultDataClass:
+    """
+    A loader function loading the files, stored by save the save function,
+    into a ResultDataClass object instance.
+    """
+    with open(filename, "rb") as f:
+        return pickle.load(f)
+
+
+#######################################################################################
+# The main function typically needs no changing.
+#
+# To see the different execution modes of this file type:
+#
+# python simset_setup.py -h
+#
+#######################################################################################
+if __name__ == '__main__':
+    simset.command_line.command_line_simulate_process(
+        simulate_function=simulate_function,
+        process_function=post_processing_function,
+        save=save,
+        load=load,
+    )
