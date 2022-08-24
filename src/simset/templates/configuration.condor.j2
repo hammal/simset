@@ -1,0 +1,42 @@
+##################################################################
+##
+## Condor Configuration
+## 
+##################################################################
+
+universe	= vanilla
+getenv		= True
+
+{% if directory %}
+initialdir	= {{ directory }}
+{% endif %}
+
+executable	= {{ executable }}
+arguments	= {{ arguments }}
+
+log		    = {{ condor_log_folder }}.$(Process).log
+output		= {{ condor_out_folder }}.$(Process).out
+error		= {{ condor_err_folder }}.$(Process).err
+
+queue {{ number_of_simulations }} 
+
+##################################################################
+##
+## Useful Condor commands
+## 
+##################################################################
+
+## List all available machines to your user
+# condor_status -avail -constraint 'regexp("$(getent passwd $USER |cut -d ',' -f 3)|itet",RESOURCE_GROUP)'
+
+## List status
+# condor_status
+
+## Condor submit this file
+# condor_submit {{ configuration_file_name }}
+
+## List queue
+# condor_q
+
+## Remove jobs
+# condor_rm #jobid
