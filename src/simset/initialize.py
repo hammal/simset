@@ -3,6 +3,7 @@ import logging
 import jinja2
 import simset
 from itertools import chain
+import simset
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +57,11 @@ included in the initialized folder.
     with open(os.path.join(path, 'README.md'), 'w') as f:
         f.write(template.render({}))
     print(readme_text)
+
+    # create .data folder if it does not exist
+    simset.simulate._create_folder_if_does_not_exists(".data")
+    with open(os.path.join(os.path.join(path, '.data'), 'README.md'), 'w') as f:
+        f.write("Please don't manually edit files in this folder. It is used by simset to store simulations and manage simulation scheduling")
 
 
 def _remove_folder_if_sure(path: str):
@@ -169,7 +175,10 @@ def out(index: int = -1):
         else:
             logger.info("Multiple candidates for index: {index}\nNamely: {candidates}")
     else:
-        logger.info(f"{len(_out_files())} number of stdout files")
+        number_of_out_files = len(_out_files())
+        logger.info(f"{number_of_out_files} number of stdout files.")
+        if number_of_out_files > 0:
+            logger.info(f"\n\nTo display a specific output file use the index [0-{number_of_out_files-1}] option")
 
 
 def error(index: int = -1):
@@ -189,7 +198,10 @@ def error(index: int = -1):
         else:
             logger.info("Multiple candidates for index: {index}\nNamely: {candidates}")
     else:
-        logger.info(f"{len(_err_files())} number of stderr files")
+        number_of_error_files = len(_err_files())
+        logger.info(f"{number_of_error_files} number of stderr files.")
+        if number_of_error_files > 0:
+            logger.info(f"To display a specific error use the index [0-{number_of_error_files-1}] option")
 
 
 def info():

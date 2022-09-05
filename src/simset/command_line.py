@@ -80,7 +80,7 @@ def command_line_simulate_process(
                 logger.error("No unsimulated argument configurations to simulate")
                 exit(1)
         exit(0)
-    elif args.action == 'log':
+    elif args.action == 'output':
         out(args.index)
         exit(0)
     elif args.action == 'error':

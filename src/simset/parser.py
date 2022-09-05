@@ -70,14 +70,17 @@ def simulate_process_parser() -> argparse.Namespace:
     )
     # The simulate subcommand
     simulate_subparsers = simulate.add_subparsers(
+        title="simulate",
         dest="command",
-        required=False,
-        # help="choose an action...",
+        required=True,
+        description="choose whether to setup or execute the simulations",
+        help="setup or execute the required simulations?",
     )
     # The execute command
     simulate_execute_parser = simulate_subparsers.add_parser(
         'execute',
-        help="execute a particular simulation"
+        help="execute a particular simulation",
+        description="invoke a particular simulation setup"
     )
     simulate_execute_parser.add_argument(
         "-i",
@@ -90,20 +93,21 @@ def simulate_process_parser() -> argparse.Namespace:
     # The local simulation
     simulate_setup_parser = simulate_subparsers.add_parser(
         'setup',
-        help="setup simulation files"
+        help="setup simulation files",
+        description="instantiate the required simulation files for a particular computation backend"
     )
-    simulate_setup_parser.add_argument('backend', choices=['local', 'condor', 'euler'])
+    simulate_setup_parser.add_argument('backend', choices=['local', 'condor', 'euler'], help="choose a computation backed")
 
-    process = subparsers.add_parser(
-        'process', help='execute the post-processing function'
+    subparsers.add_parser(
+        'process', help='execute the post-processing function', description="runs the post_processing_function(...) function in the main.py file sequentially over all available argument combinations"
     )
 
-    info = subparsers.add_parser(
+    subparsers.add_parser(
         'info', help="display information about current state of simulations"
     )
 
     log = subparsers.add_parser(
-        'log', help="display simulation logs"
+        'output', help="display simulation output"
     )
     log.add_argument(
         "index",
