@@ -1,4 +1,5 @@
 #!/bin/bash
 {% for command in commands %}
+echo '{{ command.description }}'
 {{ command.command }};
 {% endfor %}

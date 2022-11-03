@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Iterable, List, Any
+from typing import Iterable, Dict, Any
 import pickle
 import logging
 import simset
@@ -7,6 +7,12 @@ import simset
 logger = logging.getLogger(__name__)
 
 ## simset.data_folders.append(["path1", "path2", "path3"])
+simset.python_interpreter = "python3.10"
+simset.memory_requirement = 1024
+simset.euler_email = False
+simset.euler_number_of_cores = 1
+simset.euler_wall_time = {'hours': 4, 'minutes': 0}
+simset.script_name = "main.py"
 
 #######################################################################################
 # A data class to accommodate the resulting data.
@@ -17,12 +23,13 @@ class ResultDataClass:
     A dataclass to hold return arguments.
     """
 
-    args: List
+    args: Dict
     res: Any
+    time: Dict
 
 
 #######################################################################################
-# The simulate function to be runned at each node.
+# The simulate function to be executed at each node.
 #######################################################################################
 @simset.arg('arg1', [1, 2, 3])
 @simset.arg('arg2', [4, 5, 6])
@@ -37,7 +44,7 @@ def simulate_function(arg1, arg2):
     result = f"arg1^arg2 = {arg1 ** arg2}"
 
     # put the results in the ResultDataClass
-    result_dataclass = ResultDataClass(args=(arg1, arg2), res=result)
+    result_dataclass = ResultDataClass(args=(arg1, arg2), res=result, time={})
 
     # return the results dataclass and it will automatically be stored
     return result_dataclass

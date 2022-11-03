@@ -2,6 +2,14 @@ import os as _os
 from typing import Dict, Tuple, List
 
 data_folders = [_os.path.join(_os.getcwd(), ".data")]
+python_interpreter = "python3.9"
+memory_requirement = 1024
+euler_email = False
+euler_number_of_cores = 1
+euler_wall_time = {}
+script_name = "main.py"
+concurrent_jobs = _os.cpu_count()
+
 
 _arguments_list: List[Tuple] = []
 _hash_to_args: Dict = {}

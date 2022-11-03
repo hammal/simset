@@ -50,7 +50,7 @@ included in the initialized folder.
     """
 
     # Create the simset_setup file
-    template = _env.get_template('simset_setup.py.j2')
+    template = _env.get_template('main.py.j2')
     with open(filename, 'w') as f:
         f.write(template.render({"path": path, "main_file": _filename}))
     template = _env.get_template('README.md.j2')
@@ -64,12 +64,13 @@ included in the initialized folder.
         f.write("Please don't manually edit files in this folder. It is used by simset to store simulations and manage simulation scheduling")
 
 
-def _remove_folder_if_sure(path: str):
+def _remove_folder_if_sure(path: str, exclude: list[str]= []):
     if os.path.exists(path):
         logger.info(f"removing: {path} and its contents")
         for root, dirs, files in os.walk(path, topdown=True):
             for file in files:
-                os.remove(os.path.join(root, file))
+                if file not in exclude:
+                    os.remove(os.path.join(root, file))
             for dir_name in dirs:
                 folder_path = os.path.join(root, dir_name)
                 _remove_folder_if_sure(folder_path)
@@ -80,10 +81,11 @@ def clean(path: str = os.getcwd(), force: bool = False):
     """
     cleanup simset files
     """
-    if not force:
+    logger.info(f"cleaning path: {path}")
+    if force:
         descision = str(
             input(
-                f'\nAre you sure you want to delete {_filename} and all simulation data?\ny/n\n'
+                f'\nAre you sure you want to delete {_filename}?\ny/n\n'
             )
         ).lower()
         if descision.lower() == 'yes' or descision == 'y':
@@ -93,28 +95,29 @@ def clean(path: str = os.getcwd(), force: bool = False):
             logger.info("\nclean command aborted.")
             return
 
-    logger.info(f"cleaning path: {path}")
-    # remove main.py
-    filename = os.path.join(path, _filename)
-    if os.path.exists(filename):
-        logger.info(f"removing: {filename}")
-        os.remove(filename)
+        # remove main.py
+        filename = os.path.join(path, _filename)
+        if os.path.exists(filename):
+            logger.info(f"removing: {filename}")
+            os.remove(filename)
 
-    # remove data files
-    data_folder = os.path.join(path, simset.data_folders[0])
-    _remove_folder_if_sure(data_folder)
+    # Remove execution folders
+    for folder in ['local', 'condor', 'euler', 'parallel', 'remote', 'bash_scripts']:
+        _remove_folder_if_sure(os.path.join(path, folder))
 
-    # remove local executables
-    local_folder = os.path.join(path, 'local')
-    _remove_folder_if_sure(local_folder)
+    # Remove data files
+    descision = str(
+        input(
+                f'\nAre you sure you want to delete all simulation data?\ny/n\n'
+        )
+    ).lower()
+    if descision.lower() == 'yes' or descision == 'y':
+        _remove_folder_if_sure(simset.data_folders[0], ['README.md'])
+        pass
+    else:
+        logger.info("data files not deleted")
+        return
 
-    # remove condor files
-    condor_folder = os.path.join(path, 'condor')
-    _remove_folder_if_sure(condor_folder)
-
-    # remove euler files
-    euler_folder = os.path.join(path, 'euler')
-    _remove_folder_if_sure(euler_folder)
 
 
 def copy(src_path: str, dest_path: str):

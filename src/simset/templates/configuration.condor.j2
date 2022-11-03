@@ -11,12 +11,15 @@ getenv		= True
 initialdir	= {{ directory }}
 {% endif %}
 
+Rank		= Kflops
+request_memory = {{ memory_requirement }}
+
 executable	= {{ executable }}
 arguments	= {{ arguments }}
 
-log		    = {{ condor_log_folder }}.$(Process).log
-output		= {{ condor_out_folder }}.$(Process).out
-error		= {{ condor_err_folder }}.$(Process).err
+log         = {{ condor_log_folder }}/$(Process).log
+output		= {{ condor_out_folder }}/$(Process).out
+error		= {{ condor_err_folder }}/$(Process).err
 
 queue {{ number_of_simulations }} 
 

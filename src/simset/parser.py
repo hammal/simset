@@ -96,7 +96,8 @@ def simulate_process_parser() -> argparse.Namespace:
         help="setup simulation files",
         description="instantiate the required simulation files for a particular computation backend"
     )
-    simulate_setup_parser.add_argument('backend', choices=['local', 'condor', 'euler'], help="choose a computation backed")
+    simulate_setup_parser.add_argument('backend', choices=['local', 'parallel', 'condor', 'euler', 'remote'], help="choose a computation backed")
+    simulate_setup_parser.add_argument('host', type=str, nargs="?", default="localhost", help="ssh remote host if applicable")
 
     subparsers.add_parser(
         'process', help='execute the post-processing function', description="runs the post_processing_function(...) function in the main.py file sequentially over all available argument combinations"
