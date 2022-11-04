@@ -4,7 +4,7 @@ from simset.parser import _parse_arguments, simulate_process_parser
 from simset.simulate import simulate, simulate_setup, _get_unsimulated_args
 from simset.post_processing import post_processing
 import logging
-import time 
+import time
 
 # Set logging level
 logger = logging.getLogger(__name__)
@@ -75,7 +75,9 @@ def command_line_simulate_process(
                 tic = time.perf_counter()
                 simulate(simulate_function, 0, save)
                 toc = time.perf_counter()
-                logger.info(f"Time: the simulation took {toc - tic:0.2f} seconds to complete")
+                logger.info(
+                    f"Time: the simulation took {toc - tic:0.2f} seconds to complete"
+                )
             else:
                 logger.error("No unsimulated argument configurations to simulate")
                 exit(1)

@@ -62,10 +62,12 @@ included in the initialized folder.
     # create .data folder if it does not exist
     simset.simulate._create_folder_if_does_not_exists(".data")
     with open(os.path.join(os.path.join(path, '.data'), 'README.md'), 'w') as f:
-        f.write("Please don't manually edit files in this folder. It is used by simset to store simulations and manage simulation scheduling")
+        f.write(
+            "Please don't manually edit files in this folder. It is used by simset to store simulations and manage simulation scheduling"
+        )
 
 
-def _remove_folder_if_sure(path: str, exclude: List[str]= []):
+def _remove_folder_if_sure(path: str, exclude: List[str] = []):
     if os.path.exists(path):
         logger.info(f"removing: {path} and its contents")
         for root, dirs, files in os.walk(path, topdown=True):
@@ -85,9 +87,7 @@ def clean(path: str = os.getcwd(), force: bool = False):
     logger.info(f"cleaning path: {path}")
     if force:
         descision = str(
-            input(
-                f'\nAre you sure you want to delete {_filename}?\ny/n\n'
-            )
+            input(f'\nAre you sure you want to delete {_filename}?\ny/n\n')
         ).lower()
         if descision.lower() == 'yes' or descision == 'y':
             logger.info("Use --force option to skip this validation step")
@@ -108,9 +108,7 @@ def clean(path: str = os.getcwd(), force: bool = False):
 
     # Remove data files
     descision = str(
-        input(
-                f'\nAre you sure you want to delete all simulation data?\ny/n\n'
-        )
+        input(f'\nAre you sure you want to delete all simulation data?\ny/n\n')
     ).lower()
     if descision.lower() == 'yes' or descision == 'y':
         _remove_folder_if_sure(simset.data_folders[0], ['README.md'])
@@ -118,7 +116,6 @@ def clean(path: str = os.getcwd(), force: bool = False):
     else:
         logger.info("data files not deleted")
         return
-
 
 
 def copy(src_path: str, dest_path: str):
@@ -131,7 +128,7 @@ def _all_files(path: str):
     if os.path.exists(path):
         for root, dirs, files in os.walk(path, topdown=True):
             for file in files:
-               res.append(os.path.join(root, file))
+                res.append(os.path.join(root, file))
             for dir_name in dirs:
                 folder_path = os.path.join(root, dir_name)
                 res = res + _all_files(folder_path)
@@ -182,7 +179,9 @@ def out(index: int = -1):
         number_of_out_files = len(_out_files())
         logger.info(f"{number_of_out_files} number of stdout files.")
         if number_of_out_files > 0:
-            logger.info(f"\n\nTo display a specific output file use the index [0-{number_of_out_files-1}] option")
+            logger.info(
+                f"\n\nTo display a specific output file use the index [0-{number_of_out_files-1}] option"
+            )
 
 
 def error(index: int = -1):
@@ -205,7 +204,9 @@ def error(index: int = -1):
         number_of_error_files = len(_err_files())
         logger.info(f"{number_of_error_files} number of stderr files.")
         if number_of_error_files > 0:
-            logger.info(f"To display a specific error use the index [0-{number_of_error_files-1}] option")
+            logger.info(
+                f"To display a specific error use the index [0-{number_of_error_files-1}] option"
+            )
 
 
 def info():

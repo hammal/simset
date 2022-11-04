@@ -1,6 +1,5 @@
 import logging
 from typing import Callable
-import os
 import simset
 
 logger = logging.getLogger(__name__)

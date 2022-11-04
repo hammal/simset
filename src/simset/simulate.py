@@ -323,11 +323,10 @@ def _euler(number_of_simulations: int):
     error_file_name = os.path.join(error_folder, "%I.err")
 
     euler_command = [
-                            f'bsub -J "{os.path.basename(os.getcwd())}[1-{number_of_simulations}]"',
-                            f'-oo "{output_file_name}"',
-                            f'-eo "{error_file_name}"',
-                            f'-R "rusage[mem={simset.memory_requirement}]"',
-
+        f'bsub -J "{os.path.basename(os.getcwd())}[1-{number_of_simulations}]"',
+        f'-oo "{output_file_name}"',
+        f'-eo "{error_file_name}"',
+        f'-R "rusage[mem={simset.memory_requirement}]"',
     ]
 
     if simset.euler_email:
@@ -336,11 +335,15 @@ def _euler(number_of_simulations: int):
 
     if simset.euler_number_of_cores:
         euler_command.append(f'-n {simset.euler_number_of_cores}')
-    
-    if simset.euler_wall_time:
-        euler_command.append(f"-W {simset.euler_wall_time['hours']}:{simset.euler_wall_time['minutes']}")
 
-    euler_command.append(f'"{simset.python_interpreter} {simset.script_name} simulate execute -i \$LSB_JOBINDEX"')
+    if simset.euler_wall_time:
+        euler_command.append(
+            f"-W {simset.euler_wall_time['hours']}:{simset.euler_wall_time['minutes']}"
+        )
+
+    euler_command.append(
+        f'"{simset.python_interpreter} {simset.script_name} simulate execute -i \$LSB_JOBINDEX"'
+    )
 
     return [
         _remote(

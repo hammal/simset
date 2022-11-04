@@ -80,7 +80,7 @@ def simulate_process_parser() -> argparse.Namespace:
     simulate_execute_parser = simulate_subparsers.add_parser(
         'execute',
         help="execute a particular simulation",
-        description="invoke a particular simulation setup"
+        description="invoke a particular simulation setup",
     )
     simulate_execute_parser.add_argument(
         "-i",
@@ -94,39 +94,39 @@ def simulate_process_parser() -> argparse.Namespace:
     simulate_setup_parser = simulate_subparsers.add_parser(
         'setup',
         help="setup simulation files",
-        description="instantiate the required simulation files for a particular computation backend"
+        description="instantiate the required simulation files for a particular computation backend",
     )
-    simulate_setup_parser.add_argument('backend', choices=['local', 'parallel', 'condor', 'euler', 'remote'], help="choose a computation backed")
-    simulate_setup_parser.add_argument('host', type=str, nargs="?", default="localhost", help="ssh remote host if applicable")
+    simulate_setup_parser.add_argument(
+        'backend',
+        choices=['local', 'parallel', 'condor', 'euler', 'remote'],
+        help="choose a computation backed",
+    )
+    simulate_setup_parser.add_argument(
+        'host',
+        type=str,
+        nargs="?",
+        default="localhost",
+        help="ssh remote host if applicable",
+    )
 
     subparsers.add_parser(
-        'process', help='execute the post-processing function', description="runs the post_processing_function(...) function in the main.py file sequentially over all available argument combinations"
+        'process',
+        help='execute the post-processing function',
+        description="runs the post_processing_function(...) function in the main.py file sequentially over all available argument combinations",
     )
 
     subparsers.add_parser(
         'info', help="display information about current state of simulations"
     )
 
-    log = subparsers.add_parser(
-        'output', help="display simulation output"
-    )
+    log = subparsers.add_parser('output', help="display simulation output")
     log.add_argument(
-        "index",
-        help="specify file index",
-        type=int,
-        nargs='?',
-        default=-1
+        "index", help="specify file index", type=int, nargs='?', default=-1
     )
 
-    err = subparsers.add_parser(
-        'error', help="display and mange simulation errors"
-    )
+    err = subparsers.add_parser('error', help="display and mange simulation errors")
     err.add_argument(
-        "index",
-        help="specify file index",
-        type=int,
-        nargs='?',
-        default=-1
+        "index", help="specify file index", type=int, nargs='?', default=-1
     )
 
     return parser.parse_args()
