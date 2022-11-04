@@ -1,5 +1,6 @@
 import os
 import logging
+from typing import List
 import jinja2
 import simset
 from itertools import chain
@@ -64,7 +65,7 @@ included in the initialized folder.
         f.write("Please don't manually edit files in this folder. It is used by simset to store simulations and manage simulation scheduling")
 
 
-def _remove_folder_if_sure(path: str, exclude: list[str]= []):
+def _remove_folder_if_sure(path: str, exclude: List[str]= []):
     if os.path.exists(path):
         logger.info(f"removing: {path} and its contents")
         for root, dirs, files in os.walk(path, topdown=True):
