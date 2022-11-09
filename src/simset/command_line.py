@@ -1,10 +1,9 @@
 from typing import Callable
 from simset.initialize import init, clean, info, out, error
 from simset.parser import _parse_arguments, simulate_process_parser
-from simset.simulate import simulate, simulate_setup, _get_unsimulated_args
+from simset.simulate import simulate, simulate_setup
 from simset.post_processing import post_processing
 import logging
-import time
 
 # Set logging level
 logger = logging.getLogger(__name__)
@@ -69,18 +68,8 @@ def command_line_simulate_process(
         elif args.command == "setup":
             simulate_setup(simulate_function, args)
         else:
-            # debug
-            if len(_get_unsimulated_args()) > 1:
-                logger.info("Dryrun, testing a simulation")
-                tic = time.perf_counter()
-                simulate(simulate_function, 0, save)
-                toc = time.perf_counter()
-                logger.info(
-                    f"Time: the simulation took {toc - tic:0.2f} seconds to complete"
-                )
-            else:
-                logger.error("No unsimulated argument configurations to simulate")
-                exit(1)
+            logger.info("No suitable command was found")
+            exit(1)
         exit(0)
     elif args.action == 'output':
         out(args.index)
