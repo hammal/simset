@@ -18,6 +18,8 @@ jobs:
         run: python main.py simulate setup local
       - name: Check info
         run: python main.py info
+      - name: debug
+        run: python main.py simulate execute -i 1
       - name: Run local simulations
         run: ./bash_scripts/local_simulation.sh
       - name: Check info
