@@ -198,7 +198,7 @@ def simulate(simulation_function: Callable, index: int, save: Callable):
     }
 
     # delete if target file exists
-    full_filename = os.path.join(simset.data_folders[0], filename + ".data")
+    full_filename = os.path.join(simset.data_folder, filename + ".data")
     if os.path.exists(full_filename):
         os.remove(full_filename)
 

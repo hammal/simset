@@ -74,11 +74,15 @@ def _remove_folder_if_sure(path: str, exclude: List[str] = []):
             for file in files:
                 if file not in exclude:
                     os.remove(os.path.join(root, file))
+            print(dirs)
             for dir_name in dirs:
                 folder_path = os.path.join(root, dir_name)
                 _remove_folder_if_sure(folder_path)
-                os.removedirs(folder_path)
-
+                # os.removedirs(folder_path)
+        try:
+            os.removedirs(path)
+        except FileNotFoundError:
+            pass
 
 def clean(path: str = os.getcwd(), force: bool = False):
     """
@@ -86,15 +90,15 @@ def clean(path: str = os.getcwd(), force: bool = False):
     """
     logger.info(f"cleaning path: {path}")
     if force:
-        descision = str(
-            input(f'\nAre you sure you want to delete {_filename}?\ny/n\n')
-        ).lower()
-        if descision.lower() == 'yes' or descision == 'y':
-            logger.info("Use --force option to skip this validation step")
-            pass
-        else:
-            logger.info("\nclean command aborted.")
-            return
+        # descision = str(
+        #     input(f'\nAre you sure you want to delete {_filename}?\ny/n\n')
+        # ).lower()
+        # if descision.lower() == 'yes' or descision == 'y':
+        #     logger.info("Use --force option to skip this validation step")
+        #     pass
+        # else:
+        #     logger.info("\nclean command aborted.")
+        #     return
 
         # remove main.py
         filename = os.path.join(path, _filename)
@@ -107,11 +111,13 @@ def clean(path: str = os.getcwd(), force: bool = False):
         _remove_folder_if_sure(os.path.join(path, folder))
 
     # Remove data files
-    descision = str(
-        input(f'\nAre you sure you want to delete all simulation data?\ny/n\n')
-    ).lower()
-    if descision.lower() == 'yes' or descision == 'y':
-        _remove_folder_if_sure(simset.data_folders[0], ['README.md'])
+    if not force:
+        descision = str(
+            input(f'\nAre you sure you want to delete all simulation data?\ny/n\n')
+        ).lower()
+    if force or descision.lower() == 'yes' or descision == 'y':
+        # _remove_folder_if_sure(simset.data_folders[0], ['README.md'])
+        _remove_folder_if_sure(simset.data_folder)
         pass
     else:
         logger.info("data files not deleted")
