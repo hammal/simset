@@ -1,0 +1,42 @@
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: commit workflows
+on: push
+
+jobs:
+  simset_simulations:
+    name: "basic local simulation functionality"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout github repo
+        uses: actions/checkout@v2
+      - name: Install simset
+        run: python -m pip install .
+      - name: Initialize
+        run: simset init
+      - name: Simulate setup
+        run: python main.py simulate setup local
+      - name: Check info
+        run: python main.py info
+      - name: Run local simulations
+        run: ./bash_scripts/local_simulation.sh
+      - name: Check info
+        run: python main.py info
+      - name: Post process
+        run: python main.py process
+      - name: Cleanup
+        run: simset clean --force
+  
+  unittests:
+    name: unittests of simset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout github repo
+        uses: actions/checkout@v2
+      - name: Install simset
+        run: python -m pip install .
+      - name: Install test dependencies
+        run: python -m pip install -r tests/requirements.txt
+      - name: run pytests
+        run: pytest tests
+      
