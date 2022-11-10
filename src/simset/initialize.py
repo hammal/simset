@@ -74,7 +74,6 @@ def _remove_folder_if_sure(path: str, exclude: List[str] = []):
             for file in files:
                 if file not in exclude:
                     os.remove(os.path.join(root, file))
-            print(dirs)
             for dir_name in dirs:
                 folder_path = os.path.join(root, dir_name)
                 _remove_folder_if_sure(folder_path)
