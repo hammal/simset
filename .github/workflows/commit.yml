@@ -42,7 +42,11 @@ jobs:
           python main.py info
           cat ./bash_scripts/local_simulation.sh
           ls ./
+          time python main.py simulate execute -i 1 1> local/out/1.out 2> local/err/1.err;
+          time python main.py simulate execute -i 9 1> local/out/9.out 2> local/err/9.err;
           ls ./local
+          cat ./local/err/1.err
+          cat ./local/err/9.err
           ./bash_scripts/local_simulation.sh
           python main.py info
           python main.py process
