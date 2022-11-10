@@ -84,6 +84,7 @@ def _remove_folder_if_sure(path: str, exclude: List[str] = []):
         except FileNotFoundError:
             pass
 
+
 def clean(path: str = os.getcwd(), force: bool = False):
     """
     cleanup simset files
@@ -113,7 +114,7 @@ def clean(path: str = os.getcwd(), force: bool = False):
     # Remove data files
     if not force:
         descision = str(
-            input(f'\nAre you sure you want to delete all simulation data?\ny/n\n')
+            input('\nAre you sure you want to delete all simulation data?\ny/n\n')
         ).lower()
     if force or descision.lower() == 'yes' or descision == 'y':
         # _remove_folder_if_sure(simset.data_folders[0], ['README.md'])
