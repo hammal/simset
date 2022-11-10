@@ -4,28 +4,6 @@ name: commit workflows
 on: push
 
 jobs:
-  simset_simulations:
-    name: "basic local simulation functionality"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout github repo
-        uses: actions/checkout@v2
-      - name: Install simset
-        run: python -m pip install .
-      - name: Initialize
-        run: simset init
-      - name: Simulate setup
-        run: python main.py simulate setup local
-      - name: Check info
-        run: python main.py info
-      - name: Run local simulations
-        run: bash ./bash_scripts/local_simulation.sh
-      - name: Check info
-        run: python main.py info
-      - name: Post process
-        run: python main.py process
-      - name: Cleanup
-        run: simset clean --force
   
   unittests:
     name: unittests of simset
@@ -33,10 +11,36 @@ jobs:
     steps:
       - name: Checkout github repo
         uses: actions/checkout@v2
-      - name: Install simset
-        run: python -m pip install .
-      - name: Install test dependencies
-        run: python -m pip install -r tests/requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+          python -m pip install -r tests/requirements.txt
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: run pytests
         run: pytest tests
       
+  simset_simulations:
+    name: "basic local simulation functionality"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout github repo
+        uses: actions/checkout@v2
+      - name: Install simset
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+      - name: Test a full init, simulate, process, clean
+        run: |
+          simset init
+          python main.py simulate setup local
+          python main.py info
+          ./bash_scripts/local_simulation.sh
+          python main.py info
+          python main.py process
+          simset clean --force
