@@ -230,8 +230,6 @@ def info():
 
     unsimulated = simset._get_unsimulated_args()
 
-    # print(simset._hash_to_args[unsimulated[0]])
-
     print(
         f"""
     {len(simulated)} - simulated ({simulated_size})
@@ -244,14 +242,20 @@ def info_unsimulated():
     """
     print parameter configurations of unfinished simulations
     """
-    spacing = 10  # number of fixed width for value field 
+    spacing = 10  # number of fixed width for value field
     unsimulated = simset._get_unsimulated_args()
-
-    # print(simset._hash_to_args[unsimulated[0]])
 
     print("\nunsimulated simulations:")
     for key in unsimulated:
-        pairs = zip(simset._hash_to_args[key][0],simset._hash_to_args[key][1])
-        print("...{}: ".format(key[-8:]) + "\t".join([f"{key}: {value}" + " " * (spacing - len(str(value))) for key, value in pairs]))
+        pairs = zip(simset._hash_to_args[key][0], simset._hash_to_args[key][1])
+        print(
+            "...{}: ".format(key[-8:])
+            + "\t".join(
+                [
+                    f"{key}: {value}" + " " * (spacing - len(str(value)))
+                    for key, value in pairs
+                ]
+            )
+        )
 
-    print()    
+    print()
