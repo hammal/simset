@@ -240,7 +240,7 @@ def info():
     )
 
 
-def info_unfinished():
+def info_unsimulated():
     """
     print parameter configurations of unfinished simulations
     """
@@ -249,7 +249,7 @@ def info_unfinished():
 
     # print(simset._hash_to_args[unsimulated[0]])
 
-    print("\nunfinished simulations:")
+    print("\nunsimulated simulations:")
     for key in unsimulated:
         pairs = zip(simset._hash_to_args[key][0],simset._hash_to_args[key][1])
         print("...{}: ".format(key[-8:]) + "\t".join([f"{key}: {value}" + " " * (spacing - len(str(value))) for key, value in pairs]))

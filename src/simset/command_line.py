@@ -1,5 +1,5 @@
 from typing import Callable
-from simset.initialize import init, clean, info, info_unfinished, out, error
+from simset.initialize import init, clean, info, info_unsimulated, out, error
 from simset.parser import _parse_arguments, simulate_process_parser
 from simset.simulate import simulate, simulate_setup, _get_unsimulated_args
 from simset.post_processing import post_processing
@@ -89,8 +89,8 @@ def command_line_simulate_process(
         error(args.index)
         exit(0)
     elif args.action == 'info':
-        if args.command == "unfinished":
-            info_unfinished()
+        if args.command == "unsimulated":
+            info_unsimulated()
         else:
             info()
         exit(0)

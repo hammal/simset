@@ -127,10 +127,10 @@ def simulate_process_parser() -> argparse.Namespace:
         help="display information about the current state of simulations",
     )
 
-    info_unfinished_parser = info_subparser.add_parser(
-        'unfinished',
-        help="shows parameter settings of unfinished simulations",
-        description="shows parameter settings of unfinished simulations",
+    info_unsimulated_parser = info_subparser.add_parser(
+        'unsimulated',
+        help="shows parameter settings of unsimulated simulations",
+        description="shows parameter settings of unsimulated simulations",
     )
 
     log = subparsers.add_parser('output', help="display simulation output")
