@@ -115,8 +115,22 @@ def simulate_process_parser() -> argparse.Namespace:
         description="runs the post_processing_function(...) function in the main.py file sequentially over all available argument combinations",
     )
 
-    subparsers.add_parser(
+    info = subparsers.add_parser(
         'info', help="display information about current state of simulations"
+    )
+
+    info_subparser = info.add_subparsers(
+        title="info",
+        dest="command",
+        required=False,
+        description="display information about the current state of the simulation",
+        help="display information about the current state of simulations",
+    )
+
+    info_unsimulated_parser = info_subparser.add_parser(
+        'unsimulated',
+        help="shows parameter settings of unsimulated simulations",
+        description="shows parameter settings of unsimulated simulations",
     )
 
     log = subparsers.add_parser('output', help="display simulation output")
