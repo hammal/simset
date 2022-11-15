@@ -12,7 +12,7 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "action",
         help="determine action",
-        choices=['init', 'clean', 'copy'],
+        choices=['init', 'clean'],
     )
 
     parser.add_argument(

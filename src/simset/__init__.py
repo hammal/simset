@@ -1,7 +1,7 @@
 import os as _os
 from typing import Dict, Tuple, List
 
-data_folders = [_os.path.join(_os.getcwd(), ".data")]
+data_folder = _os.path.join(_os.getcwd(), ".data")
 python_interpreter = "python3.9"
 memory_requirement = 1024
 euler_email = False
@@ -35,23 +35,22 @@ def hash_to_filename(hashable: Tuple) -> str:
 
 def data_path(filename: str):
     "return absolute path for filename"
-    return _os.path.join(data_folders[0], filename + ".data")
+    return _os.path.join(data_folder, filename + ".data")
 
 
 def _get_simulated_arg_hashes():
     hashes = []
-    for folder in data_folders:
-        files = _os.listdir(folder)
-        for file in files:
-            basename = _os.path.basename(file)
-            if basename.endswith(".data"):
-                hashes.append(basename.split('.')[0])
+    files = _os.listdir(data_folder)
+    for file in files:
+        basename = _os.path.basename(file)
+        if basename.endswith(".data"):
+            hashes.append(basename.split('.')[0])
     return hashes
 
 
 def _data_folder_exist():
-    if not _os.path.exists(data_folders[0]):
-        _os.makedirs(data_folders[0])
+    if not _os.path.exists(data_folder):
+        _os.makedirs(data_folder)
 
 
 def arg(name: str, list_of_args: List):
