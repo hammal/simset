@@ -1,8 +1,9 @@
 import os as _os
 from typing import Dict, Tuple, List
+import sys
 
 data_folder = _os.path.join(_os.getcwd(), ".data")
-python_interpreter = "python3.9"
+python_interpreter = sys.executable
 memory_requirement = 1024
 euler_email = False
 euler_number_of_cores = 1

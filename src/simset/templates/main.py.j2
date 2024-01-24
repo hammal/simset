@@ -4,11 +4,12 @@ import pickle
 import logging
 import simset
 import os
+import sys
 
 logger = logging.getLogger(__name__)
 
 simset.data_folder = os.path.join(os.getcwd(), ".data")
-simset.python_interpreter = "python"
+simset.python_interpreter = sys.executable
 simset.memory_requirement = 1024
 simset.concurrent_jobs = 4
 simset.script_name = "main.py"
